@@ -2,9 +2,9 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
-app.use(express.static(__dirname + '/dist/YOURPROJECTNAME'));
+app.use(express.static(__dirname + '/dist/Auth'));
 app.get('/*', function(req,res) {
-res.sendFile(path.join(__dirname + '/dist/YOURPROJECTNAME/index.html'));
+res.sendFile(path.join(__dirname + '/dist/Auth/index.html'));
 
 });
 
