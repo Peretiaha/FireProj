@@ -1,0 +1,30 @@
+<div class="container">
+    <div class="title">
+        <h3>Registration</h3>
+    </div>
+    <form [formGroup]='formGroup' class="column-group">
+        <mat-dialog-content>
+            <mat-form-field>
+                <mat-label>Email</mat-label>
+                <input matInput type="text" class="form-control" [(ngModel)]='userViewModel.email'
+                    formControlName="email" placeholder="Ex. pat@example.com">
+                <mat-error *ngIf="formGroup.controls.email.invalid">{{getEmailErrorMessage()}}</mat-error>
+            </mat-form-field>
+            <br>
+            <mat-form-field>
+                <mat-label>Password</mat-label>
+                <input matInput type="password" class="form-control" [(ngModel)]='userViewModel.password'
+                    formControlName="password">
+                <mat-error *ngIf="formGroup.controls.email.invalid">{{getPasswordErrorMessage()}}</mat-error>
+            </mat-form-field>
+        </mat-dialog-content>
+    </form>
+
+    <div class="form-group">
+        <button mat-raised-button color="primary" (click)='registration()' type="submit">SignUp</button>
+        <div class="registration">
+            <a routerLink="/login">Login</a>
+        </div>
+    </div>
+    <label class="server-error-lable" *ngIf='sereverError != ""'>{{sereverError}}</label>
+</div>

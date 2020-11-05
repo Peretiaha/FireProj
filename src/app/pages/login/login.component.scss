@@ -1,0 +1,27 @@
+.container {
+    height: 300px;
+    width: 30%;
+    margin: 0 auto;
+    padding-top: 50px;
+}
+
+.form-group {
+    width: 70%;
+    padding-top: 10px;
+}
+
+mat-form-field {
+    width: 80%;
+}
+
+.registration {
+    padding-top: 20px;
+}
+
+.google-btn {
+    margin-left: 10px;
+}
+
+.server-error-lable {
+    color: red;
+}
