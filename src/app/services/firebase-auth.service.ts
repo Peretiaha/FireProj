@@ -2,16 +2,15 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { userViewModel } from 'src/models/userViewModel';
 import firebase from 'firebase/app'
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
-export class FirebaseService {
+export class FirebaseServiceAuth {
 
   isLoggedIn = false
   
-  constructor(private firebaseAuth: AngularFireAuth, private router: Router) { }
+  constructor(private firebaseAuth: AngularFireAuth) { }
 
    async login(userViewModel: userViewModel) {
       await this.firebaseAuth.signInWithEmailAndPassword(userViewModel.email, userViewModel.password)

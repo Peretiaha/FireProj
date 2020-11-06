@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FirebaseService } from 'src/app/services/firebase.service';
+import { FirebaseServiceAuth } from 'src/app/services/firebase-auth.service';
 import { userViewModel } from 'src/models/userViewModel';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -16,7 +16,7 @@ export class RegistrationComponent implements OnInit {
   formGroup: FormGroup;
   sereverError = '';
 
-  constructor(private firebaseService: FirebaseService,
+  constructor(private firebaseService: FirebaseServiceAuth,
     private router: Router, private popUp: MatSnackBar) { }
 
   ngOnInit(): void {

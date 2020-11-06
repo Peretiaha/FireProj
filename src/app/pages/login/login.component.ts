@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { userViewModel } from 'src/models/userViewModel';
-import { FirebaseService } from 'src/app/services/firebase.service';
+import { FirebaseServiceAuth } from 'src/app/services/firebase-auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import {MatDialog} from '@angular/material/dialog';
+import { ShopModalComponent } from '../shop/shop-modal/shop-modal.component';
 
 @Component({
   selector: 'app-login',
@@ -17,11 +19,20 @@ export class LoginComponent implements OnInit {
   formGroup: FormGroup;
   sereverError = '';
 
-  constructor(private firebaseService: FirebaseService, private router: Router,
-    private popUp: MatSnackBar) { }
+  constructor(private firebaseService: FirebaseServiceAuth, private router: Router,
+    private popUp: MatSnackBar,
+    public createDialog: MatDialog) { }
 
   ngOnInit(): void {
     this.createForm();
+  }
+
+  openCreateModal() {
+    const dialogRef = this.createDialog.open(ShopModalComponent, {
+      width: '500px',
+      data: { action: '+ Create New Shop' },
+      panelClass: 'custom-dialog-container' 
+    });
   }
 
   createForm() {

@@ -12,13 +12,21 @@ import { UserProfileComponent } from './pages/user-profile/user-profile.componen
 import {ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material-module';
+import { ShopModalComponent } from './pages/shop/shop-modal/shop-modal.component';
+import { ShopListComponent } from './pages/shop/shop-list/shop-list.component';
+import { ShopDetailsComponent } from './pages/shop/shop-details/shop-details.component';
+import { ProductModalComponent } from './pages/product/product-modal/product-modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegistrationComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    ShopModalComponent,
+    ShopListComponent,
+    ShopDetailsComponent,
+    ProductModalComponent,
   ],
   imports: [
     BrowserModule,

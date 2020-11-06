@@ -1,0 +1,49 @@
+<div class="container">
+    <h1 mat-dialog-title>{{data.action}} {{shop.name}}</h1>
+    <div class="container">
+      <form [formGroup]="formGroup" mat-dialog-content class="column-group">
+        <mat-dialog-content>
+          <input type="hidden" [hidden]="shop.shopId">
+  
+          <mat-form-field>
+            <input matInput placeholder="Name" placeholder="Name" type="string" formControlName="name"
+              [(ngModel)]="shop.name">
+            <mat-error *ngIf="formGroup.controls.name.invalid">{{getNameErrorMessage()}}</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field>
+            <input matInput type="text" placeholder="City" formControlName="city" [(ngModel)]="shop.city">
+            <mat-error *ngIf="formGroup.controls.city.invalid">{{getCityErrorMessage()}}</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field>
+            <input matInput type="text" placeholder="Address" formControlName="address" [(ngModel)]="shop.address">
+            <mat-error *ngIf="formGroup.controls.address.invalid">{{getAddressErrorMessage()}}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput type="text" placeholder="Website" formControlName="website" [(ngModel)]="shop.website">
+            <mat-error *ngIf="formGroup.controls.website.invalid">{{getWebSiteErrorMessage()}}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Specifications</mat-label>
+            <mat-select [formControl]="specifications" multiple>
+              <mat-select-trigger>
+                {{specifications.value ? specifications.value[0] : ''}}
+                <span *ngIf="specifications.value?.length > 1" class="example-additional-selection">
+                  (+{{specifications.value.length - 1}} {{specifications.value?.length === 2 ? 'other' : 'others'}})
+                </span>
+              </mat-select-trigger>
+              <mat-option *ngFor="let specification of specificationList" [value]="specification">{{specification}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+        </mat-dialog-content>
+        <button mat-raised-button type="submit" (click)="submit(shop)" color="primary">Save</button>
+      </form>
+      <div mat-dialog-actions>
+        <button mat-raised-button class="close" (click)="onCancelClick()" color="warn">Cancel</button>
+      </div>
+    </div>   
+  </div>

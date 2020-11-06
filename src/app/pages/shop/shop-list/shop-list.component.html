@@ -1,0 +1,29 @@
+<div class="row p-2">
+    <div class="col-md-12 p-2 justify-content-center">
+        <h4>All Shops</h4>
+        <button mat-button (click)='openCreateModal()'>
+            <mat-icon>add_shopping_cart</mat-icon>
+        </button>
+    </div>
+    <div class="col-md-3" *ngFor ="let shop of shops">
+        
+        <div class="shop" >
+            <div class="shop-body" (click)='details(shop.shopId)'>
+                <div class="shop-name"><mat-icon>perm_identity</mat-icon>
+                    Name: {{shop.name}}
+                </div>
+                <div class="shop-city"><mat-icon>location_city</mat-icon>
+                    City: {{shop.city}}
+                </div>
+                <div class="shop-address"> <mat-icon> location_on</mat-icon>
+                   Address: {{shop.address}}
+                </div>
+                <div class="shop-website"><mat-icon>link</mat-icon>
+                    Website: {{shop.website}}
+                 </div>
+            </div>
+                <span>
+                     <a (click)="deleteShop(shop.shopId)" class="btn btn-primary btn-xs">Delete</a>
+                    <a (click)="onEditModule(shop)" class="btn btn-danger btn-xs">Edit</a> 
+                </span>
+        </div>

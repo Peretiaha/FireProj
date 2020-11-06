@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { FirebaseService } from 'src/app/services/firebase.service';
+import { FirebaseServiceAuth } from 'src/app/services/firebase-auth.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -13,7 +13,7 @@ export class UserProfileComponent implements OnInit {
   userEmail: string;
   name: string;
   
-  constructor(private firebaseService: FirebaseService,
+  constructor(private firebaseService: FirebaseServiceAuth,
     private router: Router, private popUp: MatSnackBar) { 
     }
 
