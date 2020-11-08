@@ -22,8 +22,18 @@ export class ShopListComponent implements OnInit {
     public createDialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.shopService.feachShops().subscribe( x => {
-      this.shops = x as Shop[];
+    this.shopService.feachShops().subscribe(data=>{
+      this.shops = data.map(e => {
+        return {          
+          shopId: e.payload.doc.id,
+          name: e.payload.doc.data()['name'],
+          city: e.payload.doc.data()['city'],
+          address: e.payload.doc.data()['address'],
+          website: e.payload.doc.data()['website'],
+          products: e.payload.doc.data()['products'],
+          specifications: e.payload.doc.data()['specifications']
+        } as Shop;
+      })
     })
   } 
 

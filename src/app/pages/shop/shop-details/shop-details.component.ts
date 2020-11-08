@@ -6,8 +6,8 @@ import { ShopService } from 'src/app/services/shop.service';
 import { Product } from 'src/models/product';
 import { Shop } from 'src/models/shop';
 import { ProductModalComponent } from '../../product/product-modal/product-modal.component';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatTableDataSource} from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 
 @Component({
@@ -30,15 +30,13 @@ export class ShopDetailsComponent implements AfterViewInit, OnInit {
     public createDialog: MatDialog,
     private productService: ProductService) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
-      this.shopService.getById(this.id).subscribe(x=> {
-        this.shop = x
-      });
-
-      this.productService.feachProducts().subscribe(x=>{
-        this.dataSource = new MatTableDataSource(x)
-      })      
+    this.shop = await this.shopService.getById(this.id) as Shop;
+    this.dataSource = new MatTableDataSource(this.shop.products as Product[])
+    // this.productService.feachProducts().subscribe(x => {
+    //   this.dataSource = new MatTableDataSource(x)
+    // })
   }
 
   ngAfterViewInit() {
@@ -50,16 +48,16 @@ export class ShopDetailsComponent implements AfterViewInit, OnInit {
     const dialogRef = this.createDialog.open(ProductModalComponent, {
       width: '500px',
       data: { action: '+ Create New Product', shopId: this.id },
-      panelClass: 'custom-dialog-container' 
+      panelClass: 'custom-dialog-container'
     });
   }
 
   onEditProductModule(product: Product) {
     const dialogRef = this.createDialog.open(ProductModalComponent, {
       width: '500px',
-      panelClass: 'custom-dialog-container' ,
+      panelClass: 'custom-dialog-container',
       data: { action: 'Edit', product }
-    });    
+    });
   }
 
   deleteProduct(productId: string) {

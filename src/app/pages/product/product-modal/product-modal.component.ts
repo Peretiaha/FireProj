@@ -15,11 +15,11 @@ import { Shop } from 'src/models/shop';
 })
 export class ProductModalComponent implements OnInit {
 
-  
+
   stringIsNumber = value => isNaN(Number(value)) === false;
   product: Product = new Product();
   productId: string;
-  shopId: string;  
+  shopId: string;
   formGroup: FormGroup;
   shop: Shop;
 
@@ -33,6 +33,7 @@ export class ProductModalComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.data.product !== undefined) {
+      this.shopId = this.data.shopId
       this.product = { ... this.data.product };
     } else {
       this.product.productId = '';
@@ -51,34 +52,35 @@ export class ProductModalComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  submit(product: Product) {
+  async submit(product: Product) {
     if (this.formGroup.invalid) {
       this.formGroup.markAllAsTouched();
       return;
     }
 
-    if (product.productId === '') {      
+    if (product.productId === '') {
       product.productId = this.productService.generateId();
-      this.productService.createProduct(product);//return new
-      this.shopService.getById(this.data.shopId).subscribe(x=> {
-          this.shop = x;
+      this.productService.createProduct(product);
 
-          if (this.shop.products == null) {
-             this.shop.products = new Array<string>();
-          }
+      await this.shopService.getById(this.data.shopId).then(x => {
+        this.shop = x as Shop;
+        if (this.shop.products == null) {
+          this.shop.products = new Array<Product>();
+        }
 
-          this.shop.products.push(product.productId);
-          this.shop.shopId = this.shopId;
-          this.shopService.editShop(this.shop);
-      });
-      
+        this.shop.products.push(product);
+        this.shop.products = JSON.parse(JSON.stringify(this.shop.products));
+        this.shop.shopId = this.data.shopId;
+        this.shopService.editShop(this.shop);
+      })
+
     } else {
-      this.productService.editProduct(product)
+     await this.productService.editProduct(product)
     }
 
     this.dialogRef.close();
-          this.popUp.open('Product '+ this.data.action+' successfully!', 'Ok',
-            { duration: 2000, horizontalPosition: 'end', verticalPosition: 'top' });
+    this.popUp.open('Product ' + this.data.action + ' successfully!', 'Ok',
+      { duration: 2000, horizontalPosition: 'end', verticalPosition: 'top' });
   }
 
   getNameErrorMessage() {
@@ -94,8 +96,8 @@ export class ProductModalComponent implements OnInit {
   }
 
   getPriceErrorMessage() {
-    return this.formGroup.controls.product.hasError('required') ? 'Price is required' : 
-    this.formGroup.controls.product.hasError('max') ? 'Maximum value is 100000' :
-    this.formGroup.controls.product.hasError('min') ? 'Minimum value is 1' : '';      
+    return this.formGroup.controls.product.hasError('required') ? 'Price is required' :
+      this.formGroup.controls.product.hasError('max') ? 'Maximum value is 100000' :
+        this.formGroup.controls.product.hasError('min') ? 'Minimum value is 1' : '';
   }
 }

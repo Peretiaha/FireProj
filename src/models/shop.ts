@@ -7,5 +7,5 @@ export class Shop {
     address: string;
     specifications: Array<string>;
     website: string;
-    products: Array<string>;
+    products: Array<Product>;
 }
