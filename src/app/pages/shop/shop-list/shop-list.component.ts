@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ShopService } from 'src/app/services/shop.service';
 import { Product } from 'src/models/product';
 import { Shop } from 'src/models/shop';
+import { DeleteModuleComponent } from '../../delete-module/delete-module.component';
 import { ShopModalComponent } from '../shop-modal/shop-modal.component';
 
 @Component({
@@ -15,8 +16,7 @@ export class ShopListComponent implements OnInit {
 
   shops: Shop[];
   products: Product[];
-
-
+  
   constructor(private router: Router,
     private shopService: ShopService,
     public createDialog: MatDialog) { }
@@ -54,7 +54,16 @@ export class ShopListComponent implements OnInit {
   }
 
   deleteShop(shopId: string) {
+    
+    const dialogRef = this.createDialog.open(DeleteModuleComponent, {
+      panelClass: 'custom-dialog-container',
+      width: '500px'
+    });
+
+    dialogRef.afterClosed().subscribe(x => {
+      if (x.data === true) {
     this.shopService.deleteShop(shopId);
+      }})
   }
 
   details(shopId: string) {

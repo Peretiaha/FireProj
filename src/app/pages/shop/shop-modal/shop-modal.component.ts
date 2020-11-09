@@ -40,7 +40,7 @@ export class ShopModalComponent implements OnInit {
   createForm() {
     this.formGroup = new FormGroup({
       name: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(30)]),
-      website: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(30)]),
+      website: new FormControl('', [Validators.required, Validators.minLength(7), Validators.maxLength(30)]),
       city: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(30)]),
       address: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(30)]),
     });
@@ -73,25 +73,25 @@ export class ShopModalComponent implements OnInit {
 
   getNameErrorMessage() {
     return this.formGroup.controls.name.hasError('required') ? 'Name is required' :
-      this.formGroup.controls.name.hasError('min') ? 'Name must be 13 characters' :
-        this.formGroup.controls.name.hasError('max') ? 'Name must be 13 characters' : '';
+      this.formGroup.controls.name.hasError('minlength') ? 'Name must be 5 characters' :
+        this.formGroup.controls.name.hasError('maxlength') ? 'Name must be 30 characters' : '';
   }
 
   getCityErrorMessage() {
     return this.formGroup.controls.city.hasError('required') ? 'City is required' :
-      this.formGroup.controls.website.hasError('maxlength') ? 'City must be low than 10 characters' :
+      this.formGroup.controls.website.hasError('maxlength') ? 'City must be low than 30 characters' :
         this.formGroup.controls.city.hasError('minlength') ? 'City must be more than 5 characters' : '';
   }
 
   getAddressErrorMessage() {
     return this.formGroup.controls.address.hasError('required') ? 'Address is required' :
-      this.formGroup.controls.website.hasError('maxlength') ? 'Address must be low than 10 characters' :
-        this.formGroup.controls.address.hasError('minlength') ? 'Address must be more than 3 characters' : '';
+      this.formGroup.controls.website.hasError('maxlength') ? 'Address must be low than 30 characters' :
+        this.formGroup.controls.address.hasError('minlength') ? 'Address must be more than 5 characters' : '';
   }
 
   getWebSiteErrorMessage() {
     return this.formGroup.controls.website.hasError('required') ? 'Website is required' :
-      this.formGroup.controls.website.hasError('minlength') ? 'Website must be more than 3 characters' :
-        this.formGroup.controls.website.hasError('maxlength') ? 'Website must be low than 10 characters' : '';
+      this.formGroup.controls.website.hasError('minlength') ? 'Website must be more than 7 characters' :
+        this.formGroup.controls.website.hasError('maxlength') ? 'Website must be low than 30 characters' : '';
   }
 }

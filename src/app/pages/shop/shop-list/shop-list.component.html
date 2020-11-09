@@ -27,8 +27,12 @@
                 </div>
             </div>
             <span>
-                <a (click)="details(shop.shopId)" class="btn btn-primary">More</a>
-                <a (click)="deleteShop(shop.shopId)" class="btn btn-primary btn-xs">Delete</a>
-                <a (click)="onEditModule(shop)" class="btn btn-danger btn-xs">Edit</a>
+                <button mat-raised-button color="primary" (click)="details(shop.shopId)" mat-button>More</button>
+                <button (click)="onEditModule(shop)" mat-button>
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button (click)="deleteShop(shop.shopId)" mat-button color='warn'>
+                    <mat-icon>delete</mat-icon>
+                </button>
             </span>
         </div>
