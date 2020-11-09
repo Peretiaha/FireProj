@@ -1,11 +1,12 @@
 <p>
-    <mat-toolbar>
-     
-    <span>Authorization Service</span>
-    <span class="example-spacer"></span>
+  <mat-toolbar>
+    <span routerLink='/login' >Authorization Service</span>
+    <span> <button routerLink='/shops' mat-button>Shops</button> </span>
 
+    <span class="example-spacer"></span>
+    <span (click)='login()' class="profile"><mat-icon>account_circle</mat-icon></span>
   </mat-toolbar>
-  </p>
+</p>
 <router-outlet>
 
 </router-outlet>

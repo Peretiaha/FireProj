@@ -16,6 +16,7 @@ import { ShopModalComponent } from './pages/shop/shop-modal/shop-modal.component
 import { ShopListComponent } from './pages/shop/shop-list/shop-list.component';
 import { ShopDetailsComponent } from './pages/shop/shop-details/shop-details.component';
 import { ProductModalComponent } from './pages/product/product-modal/product-modal.component';
+import { DeleteModuleComponent } from './pages/delete-module/delete-module.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { ProductModalComponent } from './pages/product/product-modal/product-mod
     ShopListComponent,
     ShopDetailsComponent,
     ProductModalComponent,
+    DeleteModuleComponent,
   ],
   imports: [
     BrowserModule,

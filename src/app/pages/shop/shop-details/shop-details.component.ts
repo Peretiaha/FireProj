@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from 'src/app/services/product.service';
@@ -9,21 +9,22 @@ import { ProductModalComponent } from '../../product/product-modal/product-modal
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import { DeleteModuleComponent } from '../../delete-module/delete-module.component';
 
 @Component({
   selector: 'app-shop-details',
   templateUrl: './shop-details.component.html',
   styleUrls: ['./shop-details.component.scss']
 })
-export class ShopDetailsComponent implements AfterViewInit, OnInit {
+export class ShopDetailsComponent implements OnInit {
 
-  public id: string;
-  shop: Shop;
+  public shopId: string;
+  shop: Shop = new Shop();
   dataSource: MatTableDataSource<Product>;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
   public displayedColumns: string[] = ['name', 'description', 'price', 'edit', 'delete'];
   products: Array<Product>;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(private route: ActivatedRoute,
     private shopService: ShopService,
@@ -31,23 +32,29 @@ export class ShopDetailsComponent implements AfterViewInit, OnInit {
     private productService: ProductService) { }
 
   async ngOnInit() {
-    this.id = this.route.snapshot.paramMap.get('id');
-    this.shop = await this.shopService.getById(this.id) as Shop;
-    this.dataSource = new MatTableDataSource(this.shop.products as Product[])
-    // this.productService.feachProducts().subscribe(x => {
-    //   this.dataSource = new MatTableDataSource(x)
-    // })
-  }
+    this.shopId = this.route.snapshot.paramMap.get('id');
+    this.shop = await this.shopService.getById(this.shopId) as Shop;
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.productService.feachProductsByShopId(this.shopId).subscribe(data => {
+      this.dataSource = new MatTableDataSource(data.map(e => {
+        return {
+          productId: e.payload.doc.id,
+          name: e.payload.doc.data()['name'],
+          description: e.payload.doc.data()['description'],
+          price: e.payload.doc.data()['price'],
+          shopId: e.payload.doc.data()['shopId']
+        } as Product;
+      }))
+
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    })
   }
 
   openCreateProductModal() {
     const dialogRef = this.createDialog.open(ProductModalComponent, {
       width: '500px',
-      data: { action: '+ Create New Product', shopId: this.id },
+      data: { action: '+ Create New Product', shopId: this.shopId },
       panelClass: 'custom-dialog-container'
     });
   }
@@ -56,12 +63,27 @@ export class ShopDetailsComponent implements AfterViewInit, OnInit {
     const dialogRef = this.createDialog.open(ProductModalComponent, {
       width: '500px',
       panelClass: 'custom-dialog-container',
-      data: { action: 'Edit', product }
+      data: { action: 'Edit', product, shopId: this.shopId }
     });
   }
 
   deleteProduct(productId: string) {
-    this.productService.deleteProduct(productId);
+
+    const dialogRef = this.createDialog.open(DeleteModuleComponent, {
+      panelClass: 'custom-dialog-container',
+      width: '500px'
+    });
+    dialogRef.afterClosed().subscribe(x => {
+      if (x.data === true) {
+        this.productService.deleteProduct(productId);
+        const index = this.shop.products.indexOf(productId, 0);
+        if (index > -1) {
+          this.shop.products.splice(index, 1);
+        }
+
+        this.shopService.editShop(this.shop);
+      }
+    });
   }
 
   applyFilter(event: Event) {

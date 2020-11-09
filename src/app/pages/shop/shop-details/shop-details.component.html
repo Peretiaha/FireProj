@@ -3,16 +3,21 @@
         <div class="details">
             <div class="title">
                 <h2>{{shop.name}}</h2>
+                <p><b>City:</b> {{shop.city}}</p>
+                <p> <b>Address:</b> {{shop.address}}</p>
+                <p><b>WebSite:</b> {{shop.website}}</p>
+
+                <p> <b>Shop specifications:</b></p>
+                <p *ngFor='let specefication of shop.specifications'>{{specefication}}</p>
                 <hr />
               </div>
         </div>
 
-        <div class="products">
-            <button mat-button (click)='openCreateProductModal()'>+</button>
-                <hr>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+        <div class="products">            
+      <h3>Product list <button color="warn" mat-button (click)='openCreateProductModal()'>+ create product</button></h3>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Search by name" #input>
 
-            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
                 <ng-container matColumnDef="name">
                   <th mat-header-cell *matHeaderCellDef> Name </th>
@@ -42,9 +47,12 @@
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
               </table>
-              <mat-paginator [length]="3" [pageSize]="5" >              
-              </mat-paginator>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
+
         </div>
+    </div>
+    <div class="back-link">
+    <a routerLink='/shops'>Back to shops</a>
     </div>
 </div>
 

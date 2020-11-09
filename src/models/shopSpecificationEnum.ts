@@ -5,5 +5,8 @@ export enum shopSpecification {
     PC,
     Clother,
     Sport,
-    Furniture
+    Furniture,
+    Health,
+    Medicines,
+    Cars
 }

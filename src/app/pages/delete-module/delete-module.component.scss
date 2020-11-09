@@ -1,0 +1,23 @@
+.buttons {   
+
+    padding-top: 5%;
+
+    .btn-yes {
+        width: 30%;
+        height: 10%;
+        float: left;
+        padding-left: 20%;
+    }
+
+    .btn-cancle {
+        width: 30%;
+        height: 10%;
+        float: right;
+        padding-right: 5%;
+    }
+}
+
+p {
+    text-align: center;
+    font-size: 1.5rem;
+}

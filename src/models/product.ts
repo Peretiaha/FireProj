@@ -3,5 +3,5 @@ export class Product {
     name: string;
     description: string;
     price: number;
-    categories: Array<string>;    
+    shopId: string;  
 }

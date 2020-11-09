@@ -11,7 +11,12 @@ export class ProductService {
   constructor(private firestore: AngularFirestore) { }
   
   async createProduct(product: Product) {
-    await this.firestore.collection('products').add({...product});
+    let productId = '';
+    await this.firestore.collection('products').add({...product}).then(x=> {
+      productId = x.id;
+    });
+
+    return productId;
   }
 
   editProduct(product: Product) {
@@ -32,5 +37,9 @@ export class ProductService {
 
   generateId() {
     return this.firestore.createId();
+  }
+
+  feachProductsByShopId(shopId: string) {
+    return this.firestore.collection<Product>('products', ref=> ref.where('shopId', '==', shopId)).snapshotChanges();    
   }
 }

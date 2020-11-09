@@ -59,16 +59,16 @@ export class ShopModalComponent implements OnInit {
       return;
     }
 
-    if (shop.shopId === '') {  
+    if (shop.shopId === '') {
       this.shopService.createShop(shop);
     } else {
       this.shopService.editShop(shop)
     }
 
     this.dialogRef.close();
-          this.popUp.open('Shop '+ this.data.action+' successfully!', 'Ok',
-            { duration: 2000, horizontalPosition: 'end', verticalPosition: 'top' });
-        
+    this.popUp.open('Shop ' + this.data.action + ' successfully!', 'Ok',
+      { duration: 2000, horizontalPosition: 'end', verticalPosition: 'top' });
+
   }
 
   getNameErrorMessage() {

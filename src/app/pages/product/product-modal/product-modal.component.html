@@ -15,10 +15,10 @@
             <input matInput type="text" placeholder="Description" formControlName="description" [(ngModel)]="product.description">
             <!-- <mat-error *ngIf="formGroup.controls.city.invalid">{{getDescriptionErrorMessage()}}</mat-error> -->
           </mat-form-field>
-  
+          
           <mat-form-field>
-            <input matInput type="text" placeholder="Price" formControlName="price" [(ngModel)]="product.price">
-            <!-- <mat-error *ngIf="formGroup.controls.address.invalid">{{getPriceErrorMessage()}}</mat-error> -->
+            <input matInput type="number" placeholder="Price in UA" formControlName="price" [(ngModel)]="product.price">
+            <!-- <mat-error *ngIf="formGroup.controls.price.invalid">{{getPriceErrorMessage()}}</mat-error> -->
           </mat-form-field>
 
         </mat-dialog-content>

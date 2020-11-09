@@ -15,7 +15,6 @@ import { Shop } from 'src/models/shop';
 })
 export class ProductModalComponent implements OnInit {
 
-
   stringIsNumber = value => isNaN(Number(value)) === false;
   product: Product = new Product();
   productId: string;
@@ -32,8 +31,8 @@ export class ProductModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.shopId = this.data.shopId;
     if (this.data.product !== undefined) {
-      this.shopId = this.data.shopId
       this.product = { ... this.data.product };
     } else {
       this.product.productId = '';
@@ -42,8 +41,8 @@ export class ProductModalComponent implements OnInit {
 
   createForm() {
     this.formGroup = new FormGroup({
-      name: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(30)]),
-      description: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(30)]),
+      name: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]),
+      description: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]),
       price: new FormControl('', [Validators.required, Validators.min(1), Validators.max(100000)]),
     });
   }
@@ -58,24 +57,23 @@ export class ProductModalComponent implements OnInit {
       return;
     }
 
-    if (product.productId === '') {
-      product.productId = this.productService.generateId();
-      this.productService.createProduct(product);
+    product.shopId = this.shopId;
 
+    if (product.productId === '') {
       await this.shopService.getById(this.data.shopId).then(x => {
         this.shop = x as Shop;
         if (this.shop.products == null) {
-          this.shop.products = new Array<Product>();
+          this.shop.products = new Array<string>();
         }
-
-        this.shop.products.push(product);
-        this.shop.products = JSON.parse(JSON.stringify(this.shop.products));
-        this.shop.shopId = this.data.shopId;
-        this.shopService.editShop(this.shop);
       })
 
-    } else {
-     await this.productService.editProduct(product)
+      product.productId = await this.productService.createProduct(product);
+      this.shop.products.push(product.productId);
+      this.shop.shopId = this.data.shopId;
+      this.shopService.editShop(this.shop);
+    }
+    else {
+      await this.productService.editProduct(product);
     }
 
     this.dialogRef.close();
