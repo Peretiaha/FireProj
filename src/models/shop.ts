@@ -1,5 +1,3 @@
-import { Product } from './product';
-
 export class Shop {
     shopId: string;
     name: string;
@@ -8,4 +6,5 @@ export class Shop {
     specifications: Array<string>;
     website: string;
     products: Array<string>;
+    imageUrl: Array<string>;
 }

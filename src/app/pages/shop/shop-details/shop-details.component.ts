@@ -8,7 +8,7 @@ import { Shop } from 'src/models/shop';
 import { ProductModalComponent } from '../../product/product-modal/product-modal.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { DeleteModuleComponent } from '../../delete-module/delete-module.component';
 
 @Component({
@@ -21,22 +21,24 @@ export class ShopDetailsComponent implements OnInit {
   public shopId: string;
   shop: Shop = new Shop();
   dataSource: MatTableDataSource<Product>;
+  products: Product[];
   public displayedColumns: string[] = ['name', 'description', 'price', 'edit', 'delete'];
-  products: Array<Product>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  sortedData: Product[];
 
   constructor(private route: ActivatedRoute,
     private shopService: ShopService,
     public createDialog: MatDialog,
-    private productService: ProductService) { }
+    private productService: ProductService) {
+     }
 
   async ngOnInit() {
     this.shopId = this.route.snapshot.paramMap.get('id');
     this.shop = await this.shopService.getById(this.shopId) as Shop;
 
     this.productService.feachProductsByShopId(this.shopId).subscribe(data => {
-      this.dataSource = new MatTableDataSource(data.map(e => {
+     this.products = data.map(e => {
         return {
           productId: e.payload.doc.id,
           name: e.payload.doc.data()['name'],
@@ -44,8 +46,10 @@ export class ShopDetailsComponent implements OnInit {
           price: e.payload.doc.data()['price'],
           shopId: e.payload.doc.data()['shopId']
         } as Product;
-      }))
+      });
 
+      this.dataSource = new MatTableDataSource(this.products);
+      this.sortedData = this.products.slice();
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     })
@@ -94,4 +98,27 @@ export class ShopDetailsComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
+
+  compare(a: number | string, b: number | string, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
+  
+  sortData(sort: Sort) {
+    const data = this.products.slice();
+    if (!sort.active || sort.direction === '') {
+      this.sortedData = data;
+      return;
+    }
+
+    this.sortedData = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'name': return this.compare(a.name, b.name, isAsc);
+        case 'description': return this.compare(a.description, b.description, isAsc);
+        case 'price': return this.compare(a.price, b.price, isAsc);        
+        default: return 0;
+      }
+    });
+  }
 }
+

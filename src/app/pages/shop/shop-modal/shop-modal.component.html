@@ -40,6 +40,13 @@
           </mat-select>
         </mat-form-field>
 
+        <div *ngIf='shop.imageUrl == null' class="dada">
+          <label for="myfile" class="chous">
+            <mat-icon>add_a_photo</mat-icon>
+          </label>
+          <input required (change)="showPreview($event)" accept="image/*" #file type="file" placeholder="Image" class="img" id="myfile" multiple />
+        </div>
+
       </mat-dialog-content>
       <button mat-raised-button type="submit" (click)="submit(shop)" color="primary">Save</button>
     </form>

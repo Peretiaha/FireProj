@@ -21,6 +21,7 @@ export class ShopModalComponent implements OnInit {
   specifications = new FormControl();
   specificationList = Object.keys(shopSpecification).filter(this.stringIsNumber)
     .map(key => shopSpecification[key]);;
+  selectedImage: any = null;
 
   constructor(public dialogRef: MatDialogRef<ShopModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ShopDialogData,
@@ -35,6 +36,7 @@ export class ShopModalComponent implements OnInit {
     } else {
       this.shop.shopId = '';
     }
+    console.log(this.shop)
   }
 
   createForm() {
@@ -43,6 +45,7 @@ export class ShopModalComponent implements OnInit {
       website: new FormControl('', [Validators.required, Validators.minLength(7), Validators.maxLength(30)]),
       city: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(30)]),
       address: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(30)]),
+      // imageUrl: new FormControl('', [Validators.required]),
     });
   }
 
@@ -50,7 +53,7 @@ export class ShopModalComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  submit(shop: Shop) {
+  async submit(shop: Shop) {
 
     shop.specifications = this.specifications.value;
 
@@ -59,8 +62,12 @@ export class ShopModalComponent implements OnInit {
       return;
     }
 
+    if(shop.products == null)
+      shop.products = [];
+
     if (shop.shopId === '') {
-      this.shopService.createShop(shop);
+      var filePath = `shops/${this.selectedImage.name.split('.').slice(0, -1).join('.')}_${new Date().getTime()}`;
+      this.shopService.createShop(shop, filePath, this.selectedImage);
     } else {
       this.shopService.editShop(shop)
     }
@@ -68,7 +75,15 @@ export class ShopModalComponent implements OnInit {
     this.dialogRef.close();
     this.popUp.open('Shop ' + this.data.action + ' successfully!', 'Ok',
       { duration: 2000, horizontalPosition: 'end', verticalPosition: 'top' });
+  }
 
+  showPreview(event: any) {
+    if (event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => this.shop.imageUrl = e.target.result;
+      reader.readAsDataURL(event.target.files[0]);
+      this.selectedImage = event.target.files[0];
+    }
   }
 
   getNameErrorMessage() {

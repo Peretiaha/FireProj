@@ -1,58 +1,64 @@
 <div class="container">
-    <div class="shop">
-        <div class="details">
-            <div class="title">
-                <h2>{{shop.name}}</h2>
-                <p><b>City:</b> {{shop.city}}</p>
-                <p> <b>Address:</b> {{shop.address}}</p>
-                <p><b>WebSite:</b> {{shop.website}}</p>
+  <div class="shop">
+    <div class="row details">
+      <div class="col-5 title">
+        <h2>{{shop.name}}</h2>
+        <p><b>City:</b> {{shop.city}}</p>
+        <p> <b>Address:</b> {{shop.address}}</p>
+        <p><b>WebSite:</b> {{shop.website}}</p>
 
-                <p> <b>Shop specifications:</b></p>
-                <p *ngFor='let specefication of shop.specifications'>{{specefication}}</p>
-                <hr />
-              </div>
-        </div>
-
-        <div class="products">            
+        <p> <b>Shop specifications:</b></p>
+        <p *ngFor='let specefication of shop.specifications'>{{specefication}}</p>
+        <hr />
+      </div>
+      <div class="img">
+        <img style="border-style: groove;border-color: yellowgreen;border-radius: 10px;" height="350" width="280"
+          class="column-5 float-right image-fit" src={{shop.imageUrl}} />
+      </div>
+    </div>
+    <div class="products">
       <h3>Product list <button color="warn" mat-button (click)='openCreateProductModal()'>+ create product</button></h3>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Search by name" #input>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Search by name" #input>
 
-            <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+      <table matSort (matSortChange)="sortData($event)" mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
-                <ng-container matColumnDef="name">
-                  <th mat-header-cell *matHeaderCellDef> Name </th>
-                  <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-                </ng-container>
-              
-                <ng-container matColumnDef="description">
-                  <th mat-header-cell *matHeaderCellDef> Description </th>
-                  <td mat-cell *matCellDef="let element"> {{element.description}} </td>
-                </ng-container>
-              
-                <ng-container matColumnDef="price">
-                  <th mat-header-cell *matHeaderCellDef> Price </th>
-                  <td mat-cell *matCellDef="let element"> {{element.price}} </td>
-                </ng-container>
-              
-                <ng-container matColumnDef="edit">
-                  <th mat-header-cell *matHeaderCellDef> Edit </th>
-                  <td (click)='onEditProductModule(element)' mat-cell *matCellDef="let element"> <mat-icon>edit</mat-icon> </td>
-                </ng-container>
+        <ng-container matColumnDef="name">
+          <th mat-sort-header="name" mat-header-cell *matHeaderCellDef> Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
 
-                 <ng-container matColumnDef="delete">
-                    <th mat-header-cell *matHeaderCellDef> Delete </th>
-                    <td (click)='deleteProduct(element.productId)' mat-cell *matCellDef="let element"> <mat-icon>delete</mat-icon> </td>
-                  </ng-container>
-              
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-              </table>
-        <mat-paginator [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
+        <ng-container matColumnDef="description">
+          <th mat-sort-header="description" mat-header-cell *matHeaderCellDef> Description </th>
+          <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+        </ng-container>
 
-        </div>
+        <ng-container matColumnDef="price">
+          <th mat-sort-header="price" mat-header-cell *matHeaderCellDef> Price</th>
+          <td mat-cell *matCellDef="let element"> {{element.price}} ₴</td>
+        </ng-container>
+
+        <ng-container matColumnDef="edit">
+          <th mat-header-cell *matHeaderCellDef> Edit </th>
+          <td (click)='onEditProductModule(element)' mat-cell *matCellDef="let element">
+            <mat-icon>edit</mat-icon>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="delete">
+          <th mat-header-cell *matHeaderCellDef> Delete </th>
+          <td (click)='deleteProduct(element.productId)' mat-cell *matCellDef="let element">
+            <mat-icon>delete</mat-icon>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
+
     </div>
-    <div class="back-link">
+  </div>
+  <div class="back-link">
     <a routerLink='/shops'>Back to shops</a>
-    </div>
+  </div>
 </div>
-
